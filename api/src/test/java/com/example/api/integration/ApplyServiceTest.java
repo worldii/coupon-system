@@ -3,7 +3,9 @@ package com.example.api.integration;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import com.example.api.config.TestKafkaProducerConfig;
 import com.example.api.config.TestRedisConfiguration;
+import com.example.api.producer.CouponCreateProducer;
 import com.example.api.repository.CouponCountRepository;
 import com.example.api.repository.CouponRepository;
 import com.example.api.service.ApplyService;
@@ -17,7 +19,9 @@ import org.springframework.context.annotation.Import;
 
 @DisplayName("ApplyService 통합 테스트")
 @DataJpaTest
-@Import({TestRedisConfiguration.class, ApplyService.class, CouponCountRepository.class})
+@Import({TestRedisConfiguration.class, ApplyService.class,
+    CouponCountRepository.class, TestKafkaProducerConfig.class,
+    CouponCreateProducer.class})
 class ApplyServiceTest {
 
     @Autowired
