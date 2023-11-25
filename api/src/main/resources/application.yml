@@ -8,3 +8,9 @@ spring:
     url: jdbc:mysql://localhost:3306/coupon_example
     username: root
     password: jonghajh13579!
+
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
