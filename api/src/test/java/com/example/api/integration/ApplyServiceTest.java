@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.example.api.repository.CouponRepository;
 import com.example.api.service.ApplyService;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import org.junit.jupiter.api.AfterEach;
@@ -29,11 +30,14 @@ class ApplyServiceTest {
 
     @Autowired
     private RedisTemplate<String, Long> redisTemplate;
-    private static final String COUPON_COUNT = "coupon_count:";
+
     @BeforeEach
     @AfterEach
     void setUp() {
-        redisTemplate.getConnectionFactory().getConnection().flushAll();
+        Objects.requireNonNull(redisTemplate.getConnectionFactory())
+            .getConnection()
+            .serverCommands()
+            .flushAll();
     }
 
     @Test
