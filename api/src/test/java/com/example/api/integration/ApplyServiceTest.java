@@ -3,25 +3,22 @@ package com.example.api.integration;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.example.api.config.TestKafkaProducerConfig;
-import com.example.api.config.TestRedisConfiguration;
-import com.example.api.producer.CouponCreateProducer;
-import com.example.api.repository.CouponCountRepository;
 import com.example.api.repository.CouponRepository;
 import com.example.api.service.ApplyService;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 @DisplayName("ApplyService 통합 테스트")
-@DataJpaTest
-@Import({TestRedisConfiguration.class, ApplyService.class,
-    CouponCountRepository.class, TestKafkaProducerConfig.class,
-    CouponCreateProducer.class})
+@SpringBootTest
+@Transactional
 class ApplyServiceTest {
 
     @Autowired
@@ -29,6 +26,15 @@ class ApplyServiceTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private RedisTemplate<String, Long> redisTemplate;
+    private static final String COUPON_COUNT = "coupon_count:";
+    @BeforeEach
+    @AfterEach
+    void setUp() {
+        redisTemplate.getConnectionFactory().getConnection().flushAll();
+    }
 
     @Test
     @DisplayName("쿠폰을 한개만 발급한다")
