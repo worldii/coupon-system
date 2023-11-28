@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 @DisplayName("ApplyService 통합 테스트")
 @SpringBootTest
-@Transactional
 class ApplyServiceTest {
 
     @Autowired
@@ -61,7 +59,6 @@ class ApplyServiceTest {
         final int nThreads = 32;
         final ExecutorService executorService = newFixedThreadPool(nThreads);
         final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-        final int expectedCount = 100;
 
         // when
         for (int i = 0; i < threadCount; i++) {
@@ -76,8 +73,9 @@ class ApplyServiceTest {
         }
         countDownLatch.await();
 
+        Thread.sleep(10000);
         // then
         final Long count = couponRepository.count();
-        assertThat(count).isEqualTo(expectedCount);
+        assertThat(count).isEqualTo(100L);
     }
 }
