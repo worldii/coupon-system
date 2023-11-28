@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class CouponCountRepository {
 
-    private static final String COUPON_COUNT = "coupon_count:";
+    private static final String COUPON_COUNT = "coupon_count";
     private final RedisTemplate<String, String> redisTemplate;
 
     public Long increaseCouponCount() {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CouponCreateProducer {
 
-    public static final String COUPON_CREATE = "coupon-create";
+    public static final String COUPON_CREATE = "coupon_create";
     private final KafkaTemplate<String, Long> kafkaTemplate;
 
     public void createCoupon(final Long userId) {
